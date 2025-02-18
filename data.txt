@@ -1,0 +1,16 @@
+{
+    "username": "clem",
+    "password": "clem123"
+
+}
+
+
+{
+    "name":"salade",
+    "calories":150
+}
+
+{
+  "weight": 70,
+  "height": 1.75
+}
