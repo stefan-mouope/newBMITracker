@@ -20,7 +20,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["newbmitracker.onrender.com", "render.com"]
+ALLOWED_HOSTS = ["newbmitracker.onrender.com", "newbmitracker-1.onrender.com"]
 
 
 
