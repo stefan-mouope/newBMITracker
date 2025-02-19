@@ -1,14 +1,11 @@
 from django.shortcuts import render
-
-# Create your views here.
-
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
 from .models import Meal, BMI
 from rest_framework.decorators import api_view, permission_classes
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.permissions  import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import UserSerializer, MealSerializer
 
 User = get_user_model()
@@ -16,33 +13,26 @@ User = get_user_model()
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny]  # Par défaut, tout le monde peut accéder
     
     def get_permissions(self):
         if self.action == "create": 
-            
-            return [AllowAny()] 
-        return [IsAuthenticated()] 
-             
+            return [AllowAny()]  # Autoriser la création sans authentification
+        return [IsAuthenticated()]  # Pour les autres actions, authentification requise
 
 class MealViewSet(viewsets.ModelViewSet):
     queryset = Meal.objects.all()
-    serializer_class= MealSerializer
-    permission_classes = [IsAuthenticated] 
+    serializer_class = MealSerializer
+    permission_classes = [IsAuthenticated()]  # Utilisez une instance
     
-    
-    # filtrer les repas par utilisateur connecte 
+    # Filtrer les repas par utilisateur connecté
     def get_queryset(self):
-        
         user = self.request.user
         return Meal.objects.filter(user=user) 
     
-    
     def perform_create(self, serializer):
         print(f"Utilisateur assigné : {self.request.user} - Type : {type(self.request.user)}")
-
         serializer.save(user=self.request.user)
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated()])
@@ -50,9 +40,8 @@ def calculate_bmi(request):
     print("Données reçues:", request.data)
     
     try:
-        
         # Vérifie si la requête contient du JSON
-        user=request.user
+        user = request.user
         data = request.data  # Utiliser request.data au lieu de json.loads(request.body)
 
         # Récupération des valeurs
@@ -76,7 +65,6 @@ def calculate_bmi(request):
             "date": bmi_entry.date_calcul
         }, status=201)
         
-        
     except Exception as e:
         return JsonResponse({"error": f"An error occurred: {str(e)}"}, status=400)
 
@@ -95,4 +83,4 @@ def bmi_history(request):
     # Sérialiser les données
     data = [{"bmi": record.bmi_value, "date": record.date_calcul} for record in bmi_records]
 
-    return JsonResponse({"history": data}, status=200)
+    return JsonResponse({"history": data}, status=200) 
