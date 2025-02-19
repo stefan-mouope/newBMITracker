@@ -16,10 +16,12 @@ class UserViewset(viewsets.ModelViewSet):
     permission_classes = [AllowAny]  # Par défaut, tout le monde peut accéder
     
     def get_permissions(self):
-        if self.action == "create": 
-            return [AllowAny()]  # Autoriser la création sans authentification
-        return [IsAuthenticated()]  # Pour les autres actions, authentification requise
-
+        """Définit les permissions en fonction de l'action."""
+        if hasattr(self, 'action') and self.action == "create":
+            return [AllowAny()]
+        return [IsAuthenticated()]
+    
+    
 class MealViewSet(viewsets.ModelViewSet):
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
