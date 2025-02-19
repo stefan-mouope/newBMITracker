@@ -19,7 +19,7 @@ class UserViewset(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     
     def get_permissions(self):
-        if self.action == "create":
+        if self.action == "create": 
             
             return [AllowAny()] 
         return [IsAuthenticated()] 
@@ -45,7 +45,7 @@ class MealViewSet(viewsets.ModelViewSet):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated()])
 def calculate_bmi(request):
     print("Données reçues:", request.data)
     
@@ -81,7 +81,7 @@ def calculate_bmi(request):
         return JsonResponse({"error": f"An error occurred: {str(e)}"}, status=400)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated()]) 
 def bmi_history(request): 
     user = request.user
     start_date = request.query_params.get('start_date')
