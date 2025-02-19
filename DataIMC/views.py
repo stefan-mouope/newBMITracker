@@ -22,7 +22,7 @@ class UserViewset(viewsets.ModelViewSet):
         if self.action == "create":
             
             return [AllowAny()] 
-        return [IsAuthenticated]
+        return [IsAuthenticated] 
             
 
 class MealViewSet(viewsets.ModelViewSet):
